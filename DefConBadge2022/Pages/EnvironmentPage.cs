@@ -26,6 +26,8 @@ namespace DefConBadge2022
             {
                 while (true)
                 {
+                    Console.WriteLine("Draw");
+
                     Draw();
                     Thread.Sleep(TimeSpan.FromSeconds(3));
                 }
@@ -76,6 +78,8 @@ namespace DefConBadge2022
 
         void Draw()
         {
+            graphics.Clear();
+
             graphics.DrawText(x: 5, y: 5, "Hello PROJ LAB!", WildernessLabsColors.AzureBlue);
           
             if (config.TemperatureSensor.Temperature is { } temp)
@@ -101,6 +105,8 @@ namespace DefConBadge2022
                     DrawStatus("Lux:", $"{lightReading:N0}Lux", WildernessLabsColors.GalleryWhite, 100);
                 }
             }
+
+            graphics.Show();
          }
     }
 }

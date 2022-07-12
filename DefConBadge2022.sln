@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefConBadge2022", "DefConBadge2022\DefConBadge2022.csproj", "{060669EC-60B2-4E33-AF15-54603B0CA6C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DefConBadge2022", "DefConBadge2022\DefConBadge2022.csproj", "{060669EC-60B2-4E33-AF15-54603B0CA6C5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{03BA4AA1-C62D-4574-A7A0-916792724AD5}"
 EndProject
@@ -26,6 +26,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Units", "..\Meadow.Units\Source\Meadow.Units\Meadow.Units.csproj", "{F36CA968-4A12-4CE1-80B0-C0A07869A6E1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Contracts", "..\Meadow.Contracts\Source\Meadow.Contracts\Meadow.Contracts.csproj", "{4AE5BC2B-3EA4-4A1F-90C1-7FE141B1A708}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Displays.TextDisplayMenu", "..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Displays.TextDisplayMenu\Driver\Displays.TextDisplayMenu.csproj", "{788FB444-037A-4F8B-BC73-59C380C7AA5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +99,12 @@ Global
 		{4AE5BC2B-3EA4-4A1F-90C1-7FE141B1A708}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AE5BC2B-3EA4-4A1F-90C1-7FE141B1A708}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4AE5BC2B-3EA4-4A1F-90C1-7FE141B1A708}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{788FB444-037A-4F8B-BC73-59C380C7AA5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{788FB444-037A-4F8B-BC73-59C380C7AA5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{788FB444-037A-4F8B-BC73-59C380C7AA5F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{788FB444-037A-4F8B-BC73-59C380C7AA5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{788FB444-037A-4F8B-BC73-59C380C7AA5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{788FB444-037A-4F8B-BC73-59C380C7AA5F}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +120,7 @@ Global
 		{56659162-C7DE-4B5C-8F1F-CC33E646BDC5} = {03BA4AA1-C62D-4574-A7A0-916792724AD5}
 		{F36CA968-4A12-4CE1-80B0-C0A07869A6E1} = {03BA4AA1-C62D-4574-A7A0-916792724AD5}
 		{4AE5BC2B-3EA4-4A1F-90C1-7FE141B1A708} = {03BA4AA1-C62D-4574-A7A0-916792724AD5}
+		{788FB444-037A-4F8B-BC73-59C380C7AA5F} = {03BA4AA1-C62D-4574-A7A0-916792724AD5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BAD2B1D2-1A1F-4379-9FD2-8677B7F56357}

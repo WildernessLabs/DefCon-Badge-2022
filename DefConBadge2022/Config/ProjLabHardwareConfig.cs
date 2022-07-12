@@ -16,7 +16,7 @@ using System;
 
 namespace DefConBadge2022
 {
-    public class HardwareConfig : IHardwareConfig
+    public class ProjLabHardwareConfig : IHardwareConfig
     {
         public RgbPwmLed RgbPwmLed { get; protected set; }
 
@@ -39,7 +39,7 @@ namespace DefConBadge2022
 
         public IToneGenerator Speaker { get; protected set; }
 
-        public HardwareConfig(F7FeatherBase device)
+        public ProjLabHardwareConfig(F7FeatherBase device)
         {
             RgbPwmLed = new RgbPwmLed(device: device,
                 redPwmPin: device.Pins.OnboardLedRed,

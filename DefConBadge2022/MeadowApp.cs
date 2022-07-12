@@ -25,7 +25,7 @@ namespace DefConBadge2022
         {
             Console.WriteLine("Initialize hardware...");
 
-            hardware = new HardwareConfig(Device);
+            hardware = new ProjLabHardwareConfig(Device);
 
             hardware.ButtonLeft.Clicked += ButtonLeft_Clicked;
             hardware.ButtonRight.Clicked += ButtonRight_Clicked;

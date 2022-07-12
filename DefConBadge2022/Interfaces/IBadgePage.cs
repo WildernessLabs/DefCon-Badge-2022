@@ -1,12 +1,14 @@
-﻿namespace DefConBadge2022
+﻿using System.Threading.Tasks;
+
+namespace DefConBadge2022
 {
     public interface IBadgePage
     {
         void Init(IHardwareConfig config);
 
-        void StartUpdating(IHardwareConfig config);
+        Task StartUpdating(IHardwareConfig config);
 
-        void StopUpdating();
+        Task StopUpdating();
 
         void Reset();
 
