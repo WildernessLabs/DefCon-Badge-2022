@@ -6,9 +6,9 @@ namespace DefConBadge2022
     {
         void Init(IHardwareConfig config);
 
-        Task StartUpdating(IHardwareConfig config);
+        void StartUpdating(IHardwareConfig config);
 
-        Task StopUpdating();
+        void StopUpdating();
 
         void Reset();
 

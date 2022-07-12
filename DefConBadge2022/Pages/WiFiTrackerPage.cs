@@ -1,8 +1,30 @@
-﻿namespace DefConBadge2022
+﻿using System.Threading.Tasks;
+
+namespace DefConBadge2022
 {
     public class WiFiTrackerPage : IBadgePage
     {
+        public void Down()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Init(IHardwareConfig config)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Left()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Reset()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Right()
         {
             throw new System.NotImplementedException();
         }
@@ -17,28 +39,9 @@
             throw new System.NotImplementedException();
         }
 
-        public void Update(IHardwareConfig config)
-        {
-        }
-
-        public void Reset()
-        {
-        }
-
-        public void Down()
-        {
-        }
-
-        public void Left()
-        {
-        }
-
-        public void Right()
-        {
-        }
-
         public void Up()
         {
+            throw new System.NotImplementedException();
         }
     }
 }

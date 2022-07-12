@@ -83,7 +83,7 @@ namespace DefConBadge2022
                     lightTransmittance: 0.5, // lower this to increase sensitivity, for instance, if it's behind a semi opaque window
                     address: (byte)Bh1750.Addresses.Address_0x23
                 );
-                
+                bh1750.StartUpdating();
                 LightSensor = bh1750;
             }
             catch (Exception e)
@@ -94,7 +94,8 @@ namespace DefConBadge2022
             try
             {
                 var bme688 = new Bme688(i2cBus, (byte)Bme680.Addresses.Address_0x76);
-                
+                bme688.StartUpdating();
+
                 TemperatureSensor = bme688;
                 HumiditySensor = bme688;
                 PressureSensor = bme688;
