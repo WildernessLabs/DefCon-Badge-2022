@@ -35,7 +35,8 @@ namespace DefConBadge2022
         public IButton ButtonLeft { get; protected set; }
         public IButton ButtonRight { get; protected set; }
         public IButton ButtonUp { get; protected set; }
-        public IButton ButtonDown { get; protected set; }
+        // Disabled for Project Lab Board v1 due to interrupt conflict
+        //public IButton ButtonDown { get; protected set; }
 
         public IToneGenerator Speaker { get; protected set; }
 
@@ -107,7 +108,7 @@ namespace DefConBadge2022
 
             ButtonUp = new PushButton(device, device.Pins.D15, ResistorMode.InternalPullDown);
             ButtonRight = new PushButton(device, device.Pins.D05, ResistorMode.InternalPullDown);
-            ButtonDown = new PushButton(device, device.Pins.D02, ResistorMode.InternalPullDown);
+            //ButtonDown = new PushButton(device, device.Pins.D02, ResistorMode.InternalPullDown);
             ButtonLeft = new PushButton(device, device.Pins.D10, ResistorMode.InternalPullDown);
         }
     }

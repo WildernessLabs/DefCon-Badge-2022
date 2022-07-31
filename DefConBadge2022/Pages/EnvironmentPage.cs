@@ -47,10 +47,10 @@ namespace DefConBadge2022
             throw new NotImplementedException();
         }
 
-        public void Down()
-        {
-            throw new NotImplementedException();
-        }
+        //public void Down()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public void Left()
         {

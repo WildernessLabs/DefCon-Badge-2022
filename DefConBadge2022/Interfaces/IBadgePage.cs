@@ -15,6 +15,6 @@ namespace DefConBadge2022
         void Left();
         void Right();
         void Up();
-        void Down();
+        //void Down();
     }
 }

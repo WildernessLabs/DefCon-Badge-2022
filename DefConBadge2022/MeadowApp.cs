@@ -23,7 +23,7 @@ namespace DefConBadge2022
 
             hardware.ButtonLeft.Clicked += ButtonLeft_Clicked;
             hardware.ButtonRight.Clicked += ButtonRight_Clicked;
-            hardware.ButtonDown.Clicked += ButtonDown_Clicked;
+            //hardware.ButtonDown.Clicked += ButtonDown_Clicked;
             hardware.ButtonUp.Clicked += ButtonUp_Clicked;
 
             hardware.RgbPwmLed.SetColor(Color.Green);
@@ -50,10 +50,10 @@ namespace DefConBadge2022
             currentPage.Up();
         }
 
-        private void ButtonDown_Clicked(object sender, EventArgs e)
-        {
-            currentPage.Down();
-        }
+        //private void ButtonDown_Clicked(object sender, EventArgs e)
+        //{
+        //    currentPage.Down();
+        //}
 
         private void ButtonRight_Clicked(object sender, EventArgs e)
         {
