@@ -1,0 +1,11 @@
+{
+  "Lifecycle": {
+    "RestartAppFailure": false,
+    "AppFailureRestartDelaySeconds": 15
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Trace"
+    }
+  }
+}
