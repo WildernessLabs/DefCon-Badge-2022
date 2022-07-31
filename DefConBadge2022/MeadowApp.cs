@@ -2,6 +2,8 @@ using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
 using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace DefConBadge2022
@@ -30,6 +32,7 @@ namespace DefConBadge2022
 
             pages = new IBadgePage[]
             {
+                new MenuPage(),
                 new EnvironmentPage(),
                 new WiFiTrackerPage(),
             };
@@ -43,6 +46,23 @@ namespace DefConBadge2022
         {
             currentPage.StartUpdating(hardware);
             return base.Run();
+        }
+
+        public void RequestPageChange(string pageName)
+        {
+            IBadgePage page = pageName switch
+            {
+                nameof(MenuPage) => pages.FirstOrDefault(p => p.GetType() == typeof(MenuPage)),
+                nameof(EnvironmentPage) => pages.FirstOrDefault(p => p.GetType() == typeof(EnvironmentPage)),
+                nameof(WiFiTrackerPage) => pages.FirstOrDefault(p => p.GetType() == typeof(MenuPage)),
+                _ => null,
+            };
+
+            // TODO: Figure out how to switch pages.
+            //       This will result in a non-existent breakpoint triggering at SamplingSensorBase.cs:67 (a closing brace?).
+            currentPage.StopUpdating();
+            currentPage = page;
+            currentPage.StartUpdating(hardware);
         }
 
         private void ButtonUp_Clicked(object sender, EventArgs e)
