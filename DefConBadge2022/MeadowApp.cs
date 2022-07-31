@@ -1,4 +1,4 @@
-﻿using Meadow;
+using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
 using System;
@@ -14,12 +14,6 @@ namespace DefConBadge2022
         IBadgePage currentPage;
 
         IBadgePage[] pages;
-
-        public override Task Run()
-        {
-            currentPage.StartUpdating(hardware);
-            return Task.CompletedTask;
-        }
 
         public override Task Initialize()
         {
@@ -42,7 +36,13 @@ namespace DefConBadge2022
 
             currentPage = pages[0];
 
-            return Task.CompletedTask;
+            return base.Initialize();
+        }
+
+        public override Task Run()
+        {
+            currentPage.StartUpdating(hardware);
+            return base.Run();
         }
 
         private void ButtonUp_Clicked(object sender, EventArgs e)
