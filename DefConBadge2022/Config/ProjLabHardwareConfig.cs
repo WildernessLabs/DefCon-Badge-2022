@@ -2,6 +2,7 @@
 using Meadow.Foundation.Audio;
 using Meadow.Foundation.Displays.TftSpi;
 using Meadow.Foundation.Graphics;
+using Meadow.Foundation.ICs.IOExpanders;
 using Meadow.Foundation.Leds;
 using Meadow.Foundation.Sensors.Atmospheric;
 using Meadow.Foundation.Sensors.Buttons;
@@ -20,7 +21,9 @@ namespace DefConBadge2022
     {
         public RgbPwmLed RgbPwmLed { get; protected set; }
 
-        public MicroGraphics Graphics { get; protected set; } 
+        public MicroGraphics Graphics { get; protected set; }
+        public MicroGraphics GraphicsSecondary { get; protected set; }
+
 
         public ITemperatureSensor TemperatureSensor { get; protected set; }
 
@@ -32,12 +35,16 @@ namespace DefConBadge2022
 
         public IGraphicsDisplay Display { get; protected set; }
 
+        public IGraphicsDisplay DisplaySecondary { get; protected set; }
+
         public IButton ButtonLeft { get; protected set; }
         public IButton ButtonRight { get; protected set; }
         public IButton ButtonUp { get; protected set; }
         public IButton ButtonDown { get; protected set; }
 
         public IToneGenerator Speaker { get; protected set; }
+
+
 
         public ProjLabHardwareConfig(F7FeatherBase device)
         {
@@ -75,6 +82,22 @@ namespace DefConBadge2022
 
             var i2cBus = device.CreateI2cBus();
 
+            /*
+            try
+            {
+                DisplaySecondary = new As1115(device, i2cBus, device.Pins.D04);
+
+                GraphicsSecondary = new MicroGraphics(DisplaySecondary)
+                {
+                    IgnoreOutOfBoundsPixels = true,
+                    CurrentFont = new Font4x8()
+                };
+            }
+            catch
+            {
+
+            }*/
+
             try
             {
                 var bh1750 = new Bh1750(
@@ -93,7 +116,7 @@ namespace DefConBadge2022
 
             try
             {
-                var bme688 = new Bme688(i2cBus, (byte)Bme680.Addresses.Address_0x76);
+                var bme688 = new Bme680(i2cBus, (byte)Bme680.Addresses.Address_0x76);
                 bme688.StartUpdating();
 
                 TemperatureSensor = bme688;
@@ -105,9 +128,9 @@ namespace DefConBadge2022
                 Console.WriteLine($"Could not bring up Bme688: {e.Message}");
             }
 
-            ButtonUp = new PushButton(device, device.Pins.D15, ResistorMode.InternalPullDown);
+        //    ButtonUp = new PushButton(device, device.Pins.D15, ResistorMode.InternalPullDown);
             ButtonRight = new PushButton(device, device.Pins.D05, ResistorMode.InternalPullDown);
-            ButtonDown = new PushButton(device, device.Pins.D02, ResistorMode.InternalPullDown);
+        //    ButtonDown = new PushButton(device, device.Pins.D02, ResistorMode.InternalPullDown);
             ButtonLeft = new PushButton(device, device.Pins.D10, ResistorMode.InternalPullDown);
         }
     }
