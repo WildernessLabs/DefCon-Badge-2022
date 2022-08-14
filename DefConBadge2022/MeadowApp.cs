@@ -15,6 +15,8 @@ namespace DefConBadge2022
 
         IBadgePage currentPage;
 
+        MenuPage menuPage;
+
         IBadgePage[] pages;
 
         public override Task Initialize()
@@ -30,9 +32,12 @@ namespace DefConBadge2022
 
             hardware.RgbPwmLed.SetColor(Color.Green);
 
+            menuPage = new MenuPage();
+            menuPage.RequestPageChange += MenuPage_RequestPageChange;
+
             pages = new IBadgePage[]
             {
-                new MenuPage(),
+                menuPage,
                 new EnvironmentPage(),
                 new WiFiTrackerPage(),
             };
@@ -42,13 +47,7 @@ namespace DefConBadge2022
             return base.Initialize();
         }
 
-        public override Task Run()
-        {
-            currentPage.StartUpdating(hardware);
-            return base.Run();
-        }
-
-        public void RequestPageChange(string pageName)
+        private void MenuPage_RequestPageChange(string pageName)
         {
             IBadgePage page = pageName switch
             {
@@ -63,6 +62,12 @@ namespace DefConBadge2022
             currentPage.StopUpdating();
             currentPage = page;
             currentPage.StartUpdating(hardware);
+        }
+
+        public override Task Run()
+        {
+            currentPage.StartUpdating(hardware);
+            return base.Run();
         }
 
         private void ButtonUp_Clicked(object sender, EventArgs e)

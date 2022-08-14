@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace DefConBadge2022
 {
+    public delegate void RequestPageChange(string pageName);
     public class MenuPage : IBadgePage
     {
         IHardwareConfig config;
@@ -18,6 +19,8 @@ namespace DefConBadge2022
         Menu menu;
         MenuItem[] menuItems;
         Version version = Assembly.GetExecutingAssembly().GetName().Version;
+
+        public event RequestPageChange RequestPageChange;
 
         public void StartUpdating(IHardwareConfig config)
         {
@@ -77,9 +80,9 @@ namespace DefConBadge2022
 
         private void Menu_Selected(object sender, MenuSelectedEventArgs e)
         {
-            //menu.Disable();
+            menu.Disable();
             Console.WriteLine($"Page selected: {e?.Command}");
-            ((MeadowApp)Resolver.App).RequestPageChange(e?.Command);
+            RequestPageChange(e?.Command);
         }
 
         public void Reset()

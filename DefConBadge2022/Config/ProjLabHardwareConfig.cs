@@ -94,7 +94,7 @@ namespace DefConBadge2022
 
             try
             {
-                var bme688 = new Bme688(i2cBus, (byte)Bme680.Addresses.Address_0x76);
+                var bme688 = new Bme680(i2cBus, (byte)Bme680.Addresses.Address_0x76);
                 bme688.StartUpdating();
 
                 TemperatureSensor = bme688;
