@@ -4,6 +4,7 @@ using Meadow.Foundation.Displays.TftSpi;
 using Meadow.Foundation.Graphics;
 using Meadow.Foundation.ICs.IOExpanders;
 using Meadow.Foundation.Leds;
+using Meadow.Foundation.mikroBUS.Displays;
 using Meadow.Foundation.Sensors.Atmospheric;
 using Meadow.Foundation.Sensors.Buttons;
 using Meadow.Foundation.Sensors.Light;
@@ -23,7 +24,7 @@ namespace DefConBadge2022
 
         public MicroGraphics Graphics { get; protected set; }
         public MicroGraphics GraphicsSecondary { get; protected set; }
-
+        public MicroGraphics GraphicsTertiary { get; protected set; }
 
         public ITemperatureSensor TemperatureSensor { get; protected set; }
 
@@ -36,6 +37,8 @@ namespace DefConBadge2022
         public IGraphicsDisplay Display { get; protected set; }
 
         public IGraphicsDisplay DisplaySecondary { get; protected set; }
+
+        public IGraphicsDisplay DisplayTertiary { get; protected set; }
 
         public IButton ButtonLeft { get; protected set; }
         public IButton ButtonRight { get; protected set; }
@@ -82,7 +85,6 @@ namespace DefConBadge2022
 
             var i2cBus = device.CreateI2cBus();
 
-            /*
             try
             {
                 DisplaySecondary = new As1115(device, i2cBus, device.Pins.D04);
@@ -90,13 +92,29 @@ namespace DefConBadge2022
                 GraphicsSecondary = new MicroGraphics(DisplaySecondary)
                 {
                     IgnoreOutOfBoundsPixels = true,
-                    CurrentFont = new Font4x8()
+                    CurrentFont = new Font6x8()
                 };
             }
             catch
             {
 
-            }*/
+            }
+
+            try
+            {
+                DisplayTertiary = new C16x9(device, device.Pins.A02, i2cBus);
+
+                GraphicsTertiary = new MicroGraphics(DisplayTertiary)
+                {
+                    IgnoreOutOfBoundsPixels = true,
+                    CurrentFont = new Font4x8(),
+                    Rotation = RotationType._180Degrees,
+                };
+            }
+            catch
+            {
+
+            }
 
             try
             {

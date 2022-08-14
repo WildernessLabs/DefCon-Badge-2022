@@ -7,6 +7,7 @@ using Meadow.Peripherals.Displays;
 using Meadow.Units;
 using SimpleJpegDecoder;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -27,37 +28,102 @@ namespace DefConBadge2022
         BufferRgb888 splash;
         BufferRgb888 logo;
 
-        PwmLed buttonLed;
+        //PwmLed buttonLed;
 
-        Random rand = new Random();
+        //Random rand = new Random();
+
+        const float defaultBrightness = 0.2f;
+        const float brightnessChangeAmount = 0.1f;
+        const double lowestAmbientBrightnessThreshold = 40;
+        const double highestAmbientBrightnessThreshold = 1500;
+        float _tertiaryDisplayBrightness = defaultBrightness;
+        float tertiaryDisplayBrightness {
+            get { return _tertiaryDisplayBrightness; }
+            set { _tertiaryDisplayBrightness = Math.Clamp(value, 0.0f, 1.0f); }
+        }
+        float AdjustDisplayBrightnessToAmbientBrightness(/*float newBrightness*/)
+        {
+            // TODO: Clamp range around a user brightness level setting.
+            float adjustedBrightness = defaultBrightness/*newBrightness*/;
+            if (hardware.LightSensor.Illuminance is { } light)
+            {
+                if (light is { } lightReading)
+                {
+                    // TODO: Adjust brightness proportionally to brightness value.
+                    //       Take current setting and adjust up/down based on lux reading, with min/max thresholds to min/max brightness values.
+                    //if (lightReading.Lux > highestAmbientBrightnessThreshold)
+                    //{
+                    //    // If greater than 1500lux, use max brightness.
+                    //}
+                    //else if (lightReading.Lux < lowestAmbientBrightnessThreshold)
+                    //{
+                    //    // If less than 200lux, use minimal brightness.
+                    //}
+                    //else
+                    //{
+                    //    // Else, use proportion between two, weighted around the current brightness value.
+                    //}
+                    adjustedBrightness = (float)Math.Clamp(lightReading.Lux, lowestAmbientBrightnessThreshold, highestAmbientBrightnessThreshold).Map(lowestAmbientBrightnessThreshold, highestAmbientBrightnessThreshold, 0.1, 1.0);
+                    Console.WriteLine($"Lux: {lightReading.Lux}, Adjusted: {adjustedBrightness}");
+                }
+            }
+            return adjustedBrightness;
+        }
 
         public override async Task Run()
         {
-            /*
+            //_ = Task.Run(() =>
+            //{
+            //    var message = "  D3FC0N + Meadow!!";
+
+            //    while (true)
+            //    {
+            //        for (int x = 0; x < message.Length * (hardware.GraphicsSecondary.Width + 1); x++)
+            //        {
+            //            hardware.GraphicsSecondary.Clear();
+            //            hardware.GraphicsSecondary.DrawText(0 - x, 0, message);
+            //            hardware.GraphicsSecondary.Show();
+
+            //            Thread.Sleep(75);
+            //        }
+
+            //        Thread.Sleep(2000);
+            //    }
+            //});
+
             _ = Task.Run(() =>
             {
-                var message = "  D3FC0N Meadow F7 Micro V2";
+                Stopwatch stopwatch = Stopwatch.StartNew();
+
+                int maxCharsPerScreen = (int)Math.Floor(hardware.GraphicsTertiary.Width / (hardware.GraphicsTertiary.CurrentFont.Width + 1.0));
+                var message = (new string(' ', maxCharsPerScreen)) + "D3FC0N + Meadow";
+                Console.WriteLine(message);
 
                 while (true)
                 {
-                    for (int x = 0; x < message.Length * 4; x++)
+                    for (int x = 0; x < message.Length * (hardware.GraphicsTertiary.CurrentFont.Width + 1); x++)
                     {
-                        hardware.GraphicsSecondary.Clear();
-                        hardware.GraphicsSecondary.DrawText(0 - x, 1, message);
-                        hardware.GraphicsSecondary.Show();
+                        if (stopwatch.ElapsedMilliseconds > 500)
+                        {
+                            Console.WriteLine("Adjusting brightness");
+                            tertiaryDisplayBrightness = AdjustDisplayBrightnessToAmbientBrightness();
+                            stopwatch.Restart();
+                        }
+                        hardware.GraphicsTertiary.Clear();
+                        hardware.GraphicsTertiary.DrawText(0 - x, 1, message, new Color(tertiaryDisplayBrightness, tertiaryDisplayBrightness, tertiaryDisplayBrightness));
+                        hardware.GraphicsTertiary.Show();
 
-                        Thread.Sleep(75);
+                        Thread.Sleep(50);
                     }
 
-                    Thread.Sleep(2000 + rand.Next(3000));
+                    Thread.Sleep(1000);
                 }
             });
-            */
 
             while (true)
             {
                 DrawSplash(splash);
-                await Task.Delay(3000);
+                await Task.Delay(10000);
 
                 currentPage.StartUpdating(hardware);
                 await Task.Delay(20000);
@@ -76,9 +142,9 @@ namespace DefConBadge2022
         {
             Console.WriteLine("Initialize hardware...");
 
-            buttonLed = new PwmLed(Device, Device.Pins.D03, new Voltage(3.3));
+            //buttonLed = new PwmLed(Device, Device.Pins.D03, new Voltage(3.3));
 
-            buttonLed.StartPulse(TimeSpan.FromMilliseconds(2000), 1, 0);
+            //buttonLed.StartPulse(TimeSpan.FromMilliseconds(2000), 1, 0);
 
             hardware = new ProjLabHardwareConfig(Device);
 
@@ -91,8 +157,8 @@ namespace DefConBadge2022
 
             pages = new IBadgePage[]
             {
-                new GraphPage(),
                 new EnvironmentPage(),
+                new GraphPage(),
                 new WiFiTrackerPage(),
             };
 
@@ -147,11 +213,15 @@ namespace DefConBadge2022
 
         private void ButtonRight_Clicked(object sender, EventArgs e)
         {
+            tertiaryDisplayBrightness += brightnessChangeAmount;
+            Console.WriteLine($"Brightness: {tertiaryDisplayBrightness}");
             currentPage.Right();
         }
 
         private void ButtonLeft_Clicked(object sender, EventArgs e)
         {
+            tertiaryDisplayBrightness -= brightnessChangeAmount;
+            Console.WriteLine($"Brightness: {tertiaryDisplayBrightness}");
             currentPage.Left();
         }
 
