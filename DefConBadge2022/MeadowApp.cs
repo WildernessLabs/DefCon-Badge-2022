@@ -89,14 +89,14 @@ namespace DefConBadge2022
 
             //        Thread.Sleep(2000);
             //    }
-            //});
+            //}).ConfigureAwait(false);
 
             _ = Task.Run(() =>
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
-                int maxCharsPerScreen = (int)Math.Floor(hardware.GraphicsTertiary.Width / (hardware.GraphicsTertiary.CurrentFont.Width + 1.0));
-                var message = (new string(' ', maxCharsPerScreen)) + "D3FC0N + Meadow";
+                int maxCompleteCharsPerScreen = (int)Math.Floor(hardware.GraphicsTertiary.Width / (hardware.GraphicsTertiary.CurrentFont.Width + 1.0));
+                var message = (new string(' ', maxCompleteCharsPerScreen + 1)) + "Meadow@D3FC0N";
                 Console.WriteLine(message);
 
                 while (true)
@@ -113,27 +113,27 @@ namespace DefConBadge2022
                         hardware.GraphicsTertiary.DrawText(0 - x, 1, message, new Color(tertiaryDisplayBrightness, tertiaryDisplayBrightness, tertiaryDisplayBrightness));
                         hardware.GraphicsTertiary.Show();
 
-                        Thread.Sleep(50);
+                        Thread.Sleep(0);
                     }
 
                     Thread.Sleep(1000);
                 }
-            });
+            }).ConfigureAwait(false);
 
             while (true)
             {
                 DrawSplash(splash);
-                await Task.Delay(10000);
+                await Task.Delay(10000).ConfigureAwait(false);
 
                 currentPage.StartUpdating(hardware);
-                await Task.Delay(20000);
+                await Task.Delay(20000).ConfigureAwait(false);
                 currentPage.StopUpdating();
 
                 DrawSplash(logo);
-                await Task.Delay(3000);
+                await Task.Delay(3000).ConfigureAwait(false);
 
                 currentPage.StartUpdating(hardware);
-                await Task.Delay(20000);
+                await Task.Delay(20000).ConfigureAwait(false);
                 currentPage.StopUpdating();
             }
         }
