@@ -28,9 +28,15 @@ namespace DefConBadge2022
         BufferRgb888 splash;
         BufferRgb888 logo;
 
-        //PwmLed buttonLed;
+        PwmLed buttonLed;
 
         //Random rand = new Random();
+
+        // TODO: Possibly worth making these part of some inherited system of hardware config classes?
+        const bool isProjectLabBoardV1 = false;
+        const bool useTertiaryDisplay = false;
+        const bool useSecondaryDisplay = true;
+        const bool useMikroBusButtonLed = true;
 
         const float defaultBrightness = 0.2f;
         const float brightnessChangeAmount = 0.1f;
@@ -41,28 +47,13 @@ namespace DefConBadge2022
             get { return _tertiaryDisplayBrightness; }
             set { _tertiaryDisplayBrightness = Math.Clamp(value, 0.0f, 1.0f); }
         }
-        float AdjustDisplayBrightnessToAmbientBrightness(/*float newBrightness*/)
+        float AdjustDisplayBrightnessToAmbientBrightness()
         {
-            // TODO: Clamp range around a user brightness level setting.
-            float adjustedBrightness = defaultBrightness/*newBrightness*/;
+            float adjustedBrightness = defaultBrightness;
             if (hardware.LightSensor.Illuminance is { } light)
             {
                 if (light is { } lightReading)
                 {
-                    // TODO: Adjust brightness proportionally to brightness value.
-                    //       Take current setting and adjust up/down based on lux reading, with min/max thresholds to min/max brightness values.
-                    //if (lightReading.Lux > highestAmbientBrightnessThreshold)
-                    //{
-                    //    // If greater than 1500lux, use max brightness.
-                    //}
-                    //else if (lightReading.Lux < lowestAmbientBrightnessThreshold)
-                    //{
-                    //    // If less than 200lux, use minimal brightness.
-                    //}
-                    //else
-                    //{
-                    //    // Else, use proportion between two, weighted around the current brightness value.
-                    //}
                     adjustedBrightness = (float)Math.Clamp(lightReading.Lux, lowestAmbientBrightnessThreshold, highestAmbientBrightnessThreshold).Map(lowestAmbientBrightnessThreshold, highestAmbientBrightnessThreshold, 0.1, 1.0);
                     Console.WriteLine($"Lux: {lightReading.Lux}, Adjusted: {adjustedBrightness}");
                 }
@@ -72,53 +63,59 @@ namespace DefConBadge2022
 
         public override async Task Run()
         {
-            //_ = Task.Run(() =>
-            //{
-            //    var message = "  D3FC0N + Meadow!!";
-
-            //    while (true)
-            //    {
-            //        for (int x = 0; x < message.Length * (hardware.GraphicsSecondary.Width + 1); x++)
-            //        {
-            //            hardware.GraphicsSecondary.Clear();
-            //            hardware.GraphicsSecondary.DrawText(0 - x, 0, message);
-            //            hardware.GraphicsSecondary.Show();
-
-            //            Thread.Sleep(75);
-            //        }
-
-            //        Thread.Sleep(2000);
-            //    }
-            //}).ConfigureAwait(false);
-
-            _ = Task.Run(() =>
+            if (useSecondaryDisplay)
             {
-                Stopwatch stopwatch = Stopwatch.StartNew();
-
-                int maxCompleteCharsPerScreen = (int)Math.Floor(hardware.GraphicsTertiary.Width / (hardware.GraphicsTertiary.CurrentFont.Width + 1.0));
-                var message = (new string(' ', maxCompleteCharsPerScreen + 1)) + "Meadow@D3FC0N";
-                Console.WriteLine(message);
-
-                while (true)
+                _ = Task.Run(() =>
                 {
-                    for (int x = 0; x < message.Length * (hardware.GraphicsTertiary.CurrentFont.Width + 1); x++)
+                    var message = "  D3FC0N + Meadow!!";
+
+                    while (true)
                     {
-                        if (stopwatch.ElapsedMilliseconds > 500)
+                        for (int x = 0; x < message.Length * (hardware.GraphicsSecondary.Width + 1); x++)
                         {
-                            Console.WriteLine("Adjusting brightness");
-                            tertiaryDisplayBrightness = AdjustDisplayBrightnessToAmbientBrightness();
-                            stopwatch.Restart();
+                            hardware.GraphicsSecondary.Clear();
+                            hardware.GraphicsSecondary.DrawText(0 - x, 0, message);
+                            hardware.GraphicsSecondary.Show();
+
+                            Thread.Sleep(75);
                         }
-                        hardware.GraphicsTertiary.Clear();
-                        hardware.GraphicsTertiary.DrawText(0 - x, 1, message, new Color(tertiaryDisplayBrightness, tertiaryDisplayBrightness, tertiaryDisplayBrightness));
-                        hardware.GraphicsTertiary.Show();
 
-                        Thread.Sleep(0);
+                        Thread.Sleep(2000);
                     }
+                }).ConfigureAwait(false);
+            }
 
-                    Thread.Sleep(1000);
-                }
-            }).ConfigureAwait(false);
+            if (useTertiaryDisplay)
+            {
+                _ = Task.Run(() =>
+                {
+                    Stopwatch stopwatch = Stopwatch.StartNew();
+
+                    int maxCompleteCharsPerScreen = (int)Math.Floor(hardware.GraphicsTertiary.Width / (hardware.GraphicsTertiary.CurrentFont.Width + 1.0));
+                    var message = (new string(' ', maxCompleteCharsPerScreen + 1)) + "Meadow@D3FC0N";
+                    Console.WriteLine(message);
+
+                    while (true)
+                    {
+                        for (int x = 0; x < message.Length * (hardware.GraphicsTertiary.CurrentFont.Width + 1); x++)
+                        {
+                            if (stopwatch.ElapsedMilliseconds > 500)
+                            {
+                                Console.WriteLine("Adjusting brightness");
+                                tertiaryDisplayBrightness = AdjustDisplayBrightnessToAmbientBrightness();
+                                stopwatch.Restart();
+                            }
+                            hardware.GraphicsTertiary.Clear();
+                            hardware.GraphicsTertiary.DrawText(0 - x, 1, message, new Color(tertiaryDisplayBrightness, tertiaryDisplayBrightness, tertiaryDisplayBrightness));
+                            hardware.GraphicsTertiary.Show();
+
+                            Thread.Sleep(0);
+                        }
+
+                        Thread.Sleep(1000);
+                    }
+                }).ConfigureAwait(false);
+            }
 
             while (true)
             {
@@ -142,16 +139,23 @@ namespace DefConBadge2022
         {
             Console.WriteLine("Initialize hardware...");
 
-            //buttonLed = new PwmLed(Device, Device.Pins.D03, new Voltage(3.3));
+            if (useMikroBusButtonLed)
+            {
+                buttonLed = new PwmLed(Device, Device.Pins.D03, new Voltage(3.3));
 
-            //buttonLed.StartPulse(TimeSpan.FromMilliseconds(2000), 1, 0);
+                buttonLed.StartPulse(TimeSpan.FromMilliseconds(2000), 1, 0);
+            }
 
             hardware = new ProjLabHardwareConfig(Device);
 
             hardware.ButtonLeft.Clicked += ButtonLeft_Clicked;
             hardware.ButtonRight.Clicked += ButtonRight_Clicked;
-        //    hardware.ButtonDown.Clicked += ButtonDown_Clicked;
-        //    hardware.ButtonUp.Clicked += ButtonUp_Clicked;
+            // Button down/up interrupt issues on v1 Project Lab Boards. Resolved in v2.
+            if (!isProjectLabBoardV1)
+            {
+                hardware.ButtonDown.Clicked += ButtonDown_Clicked;
+                hardware.ButtonUp.Clicked += ButtonUp_Clicked;
+            }
 
             hardware.RgbPwmLed.SetColor(Color.Green);
 
