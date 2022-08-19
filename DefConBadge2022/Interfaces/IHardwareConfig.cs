@@ -12,7 +12,13 @@ namespace DefConBadge2022
         public RgbPwmLed RgbPwmLed { get; }
         public MicroGraphics Graphics { get; }
 
+        public MicroGraphics GraphicsSecondary { get; }
+        public MicroGraphics GraphicsTertiary { get; }
+
         public IGraphicsDisplay Display { get; }
+        public IGraphicsDisplay DisplaySecondary { get; }
+
+
         public IToneGenerator Speaker { get; }
 
 

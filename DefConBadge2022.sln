@@ -29,6 +29,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Contracts", "..\Mead
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Displays.TextDisplayMenu", "..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Displays.TextDisplayMenu\Driver\Displays.TextDisplayMenu.csproj", "{788FB444-037A-4F8B-BC73-59C380C7AA5F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICs.IOExpanders.As1115", "..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\ICs.IOExpanders.As1115\Driver\ICs.IOExpanders.As1115.csproj", "{7C45E4BE-42A4-4CC0-9324-AD386A90672F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C16x9", "..\Meadow.Foundation.MikroBus\Source\C16x9\Driver\C16x9.csproj", "{B89D0938-D2A4-4EDC-971A-8C7E7E7B2584}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICs.IOExpanders.Is31fl3731", "..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\ICs.IOExpanders.Is31fl3731\Driver\ICs.IOExpanders.Is31fl3731.csproj", "{BE32AC3B-F9BF-476E-95B7-64F56473E533}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +111,24 @@ Global
 		{788FB444-037A-4F8B-BC73-59C380C7AA5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{788FB444-037A-4F8B-BC73-59C380C7AA5F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{788FB444-037A-4F8B-BC73-59C380C7AA5F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7C45E4BE-42A4-4CC0-9324-AD386A90672F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C45E4BE-42A4-4CC0-9324-AD386A90672F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C45E4BE-42A4-4CC0-9324-AD386A90672F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7C45E4BE-42A4-4CC0-9324-AD386A90672F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C45E4BE-42A4-4CC0-9324-AD386A90672F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C45E4BE-42A4-4CC0-9324-AD386A90672F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B89D0938-D2A4-4EDC-971A-8C7E7E7B2584}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B89D0938-D2A4-4EDC-971A-8C7E7E7B2584}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B89D0938-D2A4-4EDC-971A-8C7E7E7B2584}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B89D0938-D2A4-4EDC-971A-8C7E7E7B2584}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B89D0938-D2A4-4EDC-971A-8C7E7E7B2584}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B89D0938-D2A4-4EDC-971A-8C7E7E7B2584}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BE32AC3B-F9BF-476E-95B7-64F56473E533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE32AC3B-F9BF-476E-95B7-64F56473E533}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE32AC3B-F9BF-476E-95B7-64F56473E533}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BE32AC3B-F9BF-476E-95B7-64F56473E533}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE32AC3B-F9BF-476E-95B7-64F56473E533}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE32AC3B-F9BF-476E-95B7-64F56473E533}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,6 +145,9 @@ Global
 		{F36CA968-4A12-4CE1-80B0-C0A07869A6E1} = {03BA4AA1-C62D-4574-A7A0-916792724AD5}
 		{4AE5BC2B-3EA4-4A1F-90C1-7FE141B1A708} = {03BA4AA1-C62D-4574-A7A0-916792724AD5}
 		{788FB444-037A-4F8B-BC73-59C380C7AA5F} = {03BA4AA1-C62D-4574-A7A0-916792724AD5}
+		{7C45E4BE-42A4-4CC0-9324-AD386A90672F} = {03BA4AA1-C62D-4574-A7A0-916792724AD5}
+		{B89D0938-D2A4-4EDC-971A-8C7E7E7B2584} = {03BA4AA1-C62D-4574-A7A0-916792724AD5}
+		{BE32AC3B-F9BF-476E-95B7-64F56473E533} = {03BA4AA1-C62D-4574-A7A0-916792724AD5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BAD2B1D2-1A1F-4379-9FD2-8677B7F56357}

@@ -24,7 +24,7 @@ namespace DefConBadge2022
 
             Task.Run(() =>
             {
-                while (true)
+                while (IsUpdating)
                 {
                     Draw();
                     Thread.Sleep(TimeSpan.FromSeconds(3));
