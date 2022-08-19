@@ -66,6 +66,10 @@ namespace DefConBadge2022
 
         public override async Task Run()
         {
+            hardware.Graphics.Clear();
+            hardware.Graphics.DrawText(0, 0, "Initializing ...", Color.White);
+            hardware.Graphics.Show();
+
             if (useSecondaryDisplay)
             {
                 _ = Task.Run(() =>
@@ -120,6 +124,10 @@ namespace DefConBadge2022
                 }).ConfigureAwait(false);
             }
 
+
+            splash = LoadImage("mask.jpg");
+            logo = LoadImage("d3fc0n.jpg");
+
             while (true)
             {
                 DrawSplash(splash);
@@ -149,7 +157,7 @@ namespace DefConBadge2022
                 buttonLed.StartPulse(TimeSpan.FromMilliseconds(2000), 1, 0);
             }
 
-            hardware = new ProjLabHardwareConfig(Device);
+            hardware = new ProjLabHardwareConfig(Device, isProjectLabBoardV1);
 
             hardware.ButtonLeft.Clicked += ButtonLeft_Clicked;
             hardware.ButtonRight.Clicked += ButtonRight_Clicked;
@@ -195,20 +203,6 @@ namespace DefConBadge2022
             currentPage.StartUpdating(hardware);
         }
 
-        public override Task Run()
-        {
-            hardware.Graphics.Clear();
-            hardware.Graphics.DrawText(0, 0, "Initializing ...", Color.White);
-            hardware.Graphics.Show();
-
-            splash = LoadImage("mask.jpg");
-            logo = LoadImage("d3fc0n.jpg");
-
-            currentPage.StartUpdating(hardware);
-
-            return Task.CompletedTask;
-        }
-
         void DrawSplash(IPixelBuffer buffer)
         {
             hardware.Graphics.Clear();
@@ -241,10 +235,10 @@ namespace DefConBadge2022
             currentPage.Up();
         }
 
-        //private void ButtonDown_Clicked(object sender, EventArgs e)
-        //{
-        //    currentPage.Down();
-        //}
+        private void ButtonDown_Clicked(object sender, EventArgs e)
+        {
+            currentPage.Down();
+        }
 
         private void ButtonRight_Clicked(object sender, EventArgs e)
         {

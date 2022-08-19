@@ -32,6 +32,6 @@ namespace DefConBadge2022
         public IButton ButtonLeft { get; }
         public IButton ButtonRight { get; }
         public IButton ButtonUp { get; }
-        //public IButton ButtonDown { get; }
+        public IButton ButtonDown { get; }
     }
 }

@@ -4,10 +4,10 @@ namespace DefConBadge2022
 {
     public class WiFiTrackerPage : IBadgePage
     {
-        //public void Down()
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        public void Down()
+        {
+            throw new System.NotImplementedException();
+        }
 
         public void Init(IHardwareConfig config)
         {

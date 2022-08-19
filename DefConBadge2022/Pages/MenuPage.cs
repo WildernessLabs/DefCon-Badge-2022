@@ -90,11 +90,11 @@ namespace DefConBadge2022
             throw new NotImplementedException();
         }
 
-        //public void Down()
-        //{
-        //    // No longer working due to PLB issue???
-        //    throw new NotImplementedException();
-        //}
+        public void Down()
+        {
+            // No longer working due to PLB issue???
+            throw new NotImplementedException();
+        }
 
         public void Left()
         {
