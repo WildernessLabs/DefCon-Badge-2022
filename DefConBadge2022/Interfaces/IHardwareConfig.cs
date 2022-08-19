@@ -13,6 +13,7 @@ namespace DefConBadge2022
         public MicroGraphics Graphics { get; }
 
         public MicroGraphics GraphicsSecondary { get; }
+        public MicroGraphics GraphicsTertiary { get; }
 
         public IGraphicsDisplay Display { get; }
         public IGraphicsDisplay DisplaySecondary { get; }
