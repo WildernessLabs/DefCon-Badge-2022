@@ -124,26 +124,28 @@ namespace DefConBadge2022
                 }).ConfigureAwait(false);
             }
 
+            currentPage.StartUpdating(hardware);
 
             splash = LoadImage("mask.jpg");
             logo = LoadImage("d3fc0n.jpg");
 
-            while (true)
-            {
-                DrawSplash(splash);
-                await Task.Delay(10000).ConfigureAwait(false);
+            //while (true)
+            //{
+            //    DrawSplash(splash);
+            //    await Task.Delay(10000).ConfigureAwait(false);
 
-                currentPage.StartUpdating(hardware);
-                await Task.Delay(20000).ConfigureAwait(false);
-                currentPage.StopUpdating();
+            //    currentPage.StartUpdating(hardware);
+            //    await Task.Delay(20000).ConfigureAwait(false);
+            //    currentPage.StopUpdating();
 
-                DrawSplash(logo);
-                await Task.Delay(3000).ConfigureAwait(false);
+            //    DrawSplash(logo);
+            //    await Task.Delay(3000).ConfigureAwait(false);
 
-                currentPage.StartUpdating(hardware);
-                await Task.Delay(20000).ConfigureAwait(false);
-                currentPage.StopUpdating();
-            }
+            //    currentPage.StartUpdating(hardware);
+            //    await Task.Delay(20000).ConfigureAwait(false);
+            //    currentPage.StopUpdating();
+            //}
+            await base.Run();
         }
 
         public override Task Initialize()
@@ -167,6 +169,13 @@ namespace DefConBadge2022
                 hardware.ButtonDown.Clicked += ButtonDown_Clicked;
                 hardware.ButtonUp.Clicked += ButtonUp_Clicked;
             }
+            else
+            {
+                hardware.ButtonRight.LongClickedThreshold = TimeSpan.FromMilliseconds(1000);
+                Console.WriteLine(hardware.ButtonRight.LongClickedThreshold);
+                hardware.ButtonLeft.LongClicked += ButtonUp_Clicked;
+                hardware.ButtonRight.LongClicked += ButtonDown_Clicked;
+            }
 
             hardware.RgbPwmLed.SetColor(Color.Green);
 
@@ -188,6 +197,7 @@ namespace DefConBadge2022
 
         private void MenuPage_RequestPageChange(string pageName)
         {
+            Console.WriteLine($"Page switch: {pageName}");
             IBadgePage page = pageName switch
             {
                 nameof(MenuPage) => pages.FirstOrDefault(p => p.GetType() == typeof(MenuPage)),

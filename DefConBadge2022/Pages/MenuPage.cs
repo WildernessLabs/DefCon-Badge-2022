@@ -1,4 +1,4 @@
-﻿using Meadow;
+using Meadow;
 using Meadow.Foundation;
 using Meadow.Foundation.Displays.TextDisplayMenu;
 using Meadow.Foundation.Graphics;
@@ -92,8 +92,7 @@ namespace DefConBadge2022
 
         public void Down()
         {
-            // No longer working due to PLB issue???
-            throw new NotImplementedException();
+            menu.Back();
         }
 
         public void Left()
