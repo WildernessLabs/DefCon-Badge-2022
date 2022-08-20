@@ -36,10 +36,10 @@ namespace DefConBadge2022
         //Random rand = new Random();
 
         // TODO: Possibly worth making these part of some inherited system of hardware config classes?
-        const bool isProjectLabBoardV1 = false;
+        const bool isProjectLabBoardV1 = true;
         const bool useTertiaryDisplay = false;
-        const bool useSecondaryDisplay = true;
-        const bool useMikroBusButtonLed = true;
+        const bool useSecondaryDisplay = false;
+        const bool useMikroBusButtonLed = false;
 
         const float defaultBrightness = 0.2f;
         const float brightnessChangeAmount = 0.1f;
@@ -171,7 +171,7 @@ namespace DefConBadge2022
             }
             else
             {
-                hardware.ButtonRight.LongClickedThreshold = TimeSpan.FromMilliseconds(1000);
+                hardware.ButtonRight.LongClickedThreshold = TimeSpan.FromMilliseconds(500);
                 Console.WriteLine(hardware.ButtonRight.LongClickedThreshold);
                 hardware.ButtonLeft.LongClicked += ButtonUp_Clicked;
                 hardware.ButtonRight.LongClicked += ButtonDown_Clicked;
@@ -195,10 +195,10 @@ namespace DefConBadge2022
             return base.Initialize();
         }
 
-        private void MenuPage_RequestPageChange(string pageName)
+        private void MenuPage_RequestPageChange(string pageClass)
         {
-            Console.WriteLine($"Page switch: {pageName}");
-            IBadgePage page = pageName switch
+            Console.WriteLine($"Page switch: {pageClass}");
+            IBadgePage page = pageClass switch
             {
                 nameof(MenuPage) => pages.FirstOrDefault(p => p.GetType() == typeof(MenuPage)),
                 nameof(EnvironmentPage) => pages.FirstOrDefault(p => p.GetType() == typeof(EnvironmentPage)),

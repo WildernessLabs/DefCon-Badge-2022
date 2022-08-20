@@ -1,4 +1,4 @@
-using Meadow;
+﻿using Meadow;
 using Meadow.Foundation;
 using Meadow.Foundation.Displays.TextDisplayMenu;
 using Meadow.Foundation.Graphics;
@@ -29,9 +29,9 @@ namespace DefConBadge2022
 
             menuItems = new MenuItem[]
             {
-                new MenuItem("Environment", command: "startEnvironmentPage"),
-                new MenuItem("WiFi Tracker", command: "startWiFiTrackerPage"),
-                new MenuItem("Display Test", command: "startDisplayTestPage"),
+                new MenuItem("Environment", command: "startEnvironmentPage", id: nameof(EnvironmentPage)),
+                new MenuItem("WiFi Tracker", command: "startWiFiTrackerPage", id: nameof(WiFiTrackerPage)),
+                new MenuItem("Display Test", command: "startDisplayTestPage", id: nameof(GraphPage)),
                 new MenuItem("Options", subItems: new MenuItem[]
                 {
                     // TODO: TextDisplayMenuLibrary: does menu example need `$` prefix on strings: `$"Sound {value}", or is that a placeholder system?
@@ -81,8 +81,8 @@ namespace DefConBadge2022
         private void Menu_Selected(object sender, MenuSelectedEventArgs e)
         {
             menu.Disable();
-            Console.WriteLine($"Page selected: {e?.Command}");
-            RequestPageChange(e?.Command);
+            Console.WriteLine($"Page selected: {e?.PageClass}");
+            RequestPageChange(e?.PageClass);
         }
 
         public void Reset()
@@ -92,7 +92,7 @@ namespace DefConBadge2022
 
         public void Down()
         {
-            menu.Back();
+            menu.Select();
         }
 
         public void Left()
@@ -107,7 +107,7 @@ namespace DefConBadge2022
 
         public void Up()
         {
-            menu.Select();
+            menu.Back();
         }
 
         void DrawStatus(string label, string value, Color color, int yPosition)
