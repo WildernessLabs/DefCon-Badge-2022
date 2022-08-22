@@ -1,4 +1,4 @@
-﻿using Meadow;
+using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Graphics.Buffers;
@@ -7,6 +7,7 @@ using Meadow.Peripherals.Displays;
 using Meadow.Units;
 using SimpleJpegDecoder;
 using System;
+using System.Linq;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -23,6 +24,8 @@ namespace DefConBadge2022
 
         IBadgePage currentPage;
 
+        MenuPage menuPage;
+
         IBadgePage[] pages;
 
         BufferRgb888 splash;
@@ -33,10 +36,10 @@ namespace DefConBadge2022
         //Random rand = new Random();
 
         // TODO: Possibly worth making these part of some inherited system of hardware config classes?
-        const bool isProjectLabBoardV1 = false;
+        const bool isProjectLabBoardV1 = true;
         const bool useTertiaryDisplay = false;
-        const bool useSecondaryDisplay = true;
-        const bool useMikroBusButtonLed = true;
+        const bool useSecondaryDisplay = false;
+        const bool useMikroBusButtonLed = false;
 
         const float defaultBrightness = 0.2f;
         const float brightnessChangeAmount = 0.1f;
@@ -63,6 +66,10 @@ namespace DefConBadge2022
 
         public override async Task Run()
         {
+            hardware.Graphics.Clear();
+            hardware.Graphics.DrawText(0, 0, "Initializing ...", Color.White);
+            hardware.Graphics.Show();
+
             if (useSecondaryDisplay)
             {
                 _ = Task.Run(() =>
@@ -117,22 +124,28 @@ namespace DefConBadge2022
                 }).ConfigureAwait(false);
             }
 
-            while (true)
-            {
-                DrawSplash(splash);
-                await Task.Delay(10000).ConfigureAwait(false);
+            currentPage.StartUpdating(hardware);
 
-                currentPage.StartUpdating(hardware);
-                await Task.Delay(20000).ConfigureAwait(false);
-                currentPage.StopUpdating();
+            splash = LoadImage("mask.jpg");
+            logo = LoadImage("d3fc0n.jpg");
 
-                DrawSplash(logo);
-                await Task.Delay(3000).ConfigureAwait(false);
+            //while (true)
+            //{
+            //    DrawSplash(splash);
+            //    await Task.Delay(10000).ConfigureAwait(false);
 
-                currentPage.StartUpdating(hardware);
-                await Task.Delay(20000).ConfigureAwait(false);
-                currentPage.StopUpdating();
-            }
+            //    currentPage.StartUpdating(hardware);
+            //    await Task.Delay(20000).ConfigureAwait(false);
+            //    currentPage.StopUpdating();
+
+            //    DrawSplash(logo);
+            //    await Task.Delay(3000).ConfigureAwait(false);
+
+            //    currentPage.StartUpdating(hardware);
+            //    await Task.Delay(20000).ConfigureAwait(false);
+            //    currentPage.StopUpdating();
+            //}
+            await base.Run();
         }
 
         public override Task Initialize()
@@ -146,7 +159,7 @@ namespace DefConBadge2022
                 buttonLed.StartPulse(TimeSpan.FromMilliseconds(2000), 1, 0);
             }
 
-            hardware = new ProjLabHardwareConfig(Device);
+            hardware = new ProjLabHardwareConfig(Device, isProjectLabBoardV1);
 
             hardware.ButtonLeft.Clicked += ButtonLeft_Clicked;
             hardware.ButtonRight.Clicked += ButtonRight_Clicked;
@@ -156,11 +169,22 @@ namespace DefConBadge2022
                 hardware.ButtonDown.Clicked += ButtonDown_Clicked;
                 hardware.ButtonUp.Clicked += ButtonUp_Clicked;
             }
+            else
+            {
+                hardware.ButtonRight.LongClickedThreshold = TimeSpan.FromMilliseconds(500);
+                Console.WriteLine(hardware.ButtonRight.LongClickedThreshold);
+                hardware.ButtonLeft.LongClicked += ButtonUp_Clicked;
+                hardware.ButtonRight.LongClicked += ButtonDown_Clicked;
+            }
 
             hardware.RgbPwmLed.SetColor(Color.Green);
 
+            menuPage = new MenuPage();
+            menuPage.RequestPageChange += MenuPage_RequestPageChange;
+
             pages = new IBadgePage[]
             {
+                menuPage,
                 new EnvironmentPage(),
                 new GraphPage(),
                 new WiFiTrackerPage(),
@@ -168,14 +192,25 @@ namespace DefConBadge2022
 
             currentPage = pages[0];
 
-            hardware.Graphics.Clear();
-            hardware.Graphics.DrawText(0, 0, "Initializing ...", Color.White);
-            hardware.Graphics.Show();
+            return base.Initialize();
+        }
 
-            splash = LoadImage("mask.jpg");
-            logo = LoadImage("d3fc0n.jpg");
+        private void MenuPage_RequestPageChange(string pageClass)
+        {
+            Console.WriteLine($"Page switch: {pageClass}");
+            IBadgePage page = pageClass switch
+            {
+                nameof(MenuPage) => pages.FirstOrDefault(p => p.GetType() == typeof(MenuPage)),
+                nameof(EnvironmentPage) => pages.FirstOrDefault(p => p.GetType() == typeof(EnvironmentPage)),
+                nameof(WiFiTrackerPage) => pages.FirstOrDefault(p => p.GetType() == typeof(MenuPage)),
+                _ => null,
+            };
 
-            return Task.CompletedTask;
+            // TODO: Figure out how to switch pages.
+            //       This will result in a non-existent breakpoint triggering at SamplingSensorBase.cs:67 (a closing brace?).
+            currentPage.StopUpdating();
+            currentPage = page;
+            currentPage.StartUpdating(hardware);
         }
 
         void DrawSplash(IPixelBuffer buffer)

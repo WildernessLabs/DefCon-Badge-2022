@@ -47,9 +47,7 @@ namespace DefConBadge2022
 
         public IToneGenerator Speaker { get; protected set; }
 
-
-
-        public ProjLabHardwareConfig(F7FeatherBase device)
+        public ProjLabHardwareConfig(F7FeatherBase device, bool isProjectLabBoardV1 = false)
         {
             RgbPwmLed = new RgbPwmLed(device: device,
                 redPwmPin: device.Pins.OnboardLedRed,
@@ -146,9 +144,12 @@ namespace DefConBadge2022
                 Console.WriteLine($"Could not bring up Bme688: {e.Message}");
             }
 
-        //    ButtonUp = new PushButton(device, device.Pins.D15, ResistorMode.InternalPullDown);
+            if (!isProjectLabBoardV1)
+            {
+                ButtonUp = new PushButton(device, device.Pins.D15, ResistorMode.InternalPullDown);
+                ButtonDown = new PushButton(device, device.Pins.D02, ResistorMode.InternalPullDown);
+            }
             ButtonRight = new PushButton(device, device.Pins.D05, ResistorMode.InternalPullDown);
-        //    ButtonDown = new PushButton(device, device.Pins.D02, ResistorMode.InternalPullDown);
             ButtonLeft = new PushButton(device, device.Pins.D10, ResistorMode.InternalPullDown);
         }
     }
