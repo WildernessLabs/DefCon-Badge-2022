@@ -161,21 +161,7 @@ namespace DefConBadge2022
 
             hardware = new ProjLabHardwareConfig(Device, isProjectLabBoardV1);
 
-            hardware.ButtonLeft.Clicked += ButtonLeft_Clicked;
-            hardware.ButtonRight.Clicked += ButtonRight_Clicked;
-            // Button down/up interrupt issues on v1 Project Lab Boards. Resolved in v2.
-            if (!isProjectLabBoardV1)
-            {
-                hardware.ButtonDown.Clicked += ButtonDown_Clicked;
-                hardware.ButtonUp.Clicked += ButtonUp_Clicked;
-            }
-            else
-            {
-                hardware.ButtonRight.LongClickedThreshold = TimeSpan.FromMilliseconds(500);
-                Console.WriteLine(hardware.ButtonRight.LongClickedThreshold);
-                hardware.ButtonLeft.LongClicked += ButtonUp_Clicked;
-                hardware.ButtonRight.LongClicked += ButtonDown_Clicked;
-            }
+            SwitchToMenuNavigationHandlers();
 
             hardware.RgbPwmLed.SetColor(Color.Green);
 
@@ -202,15 +188,82 @@ namespace DefConBadge2022
             {
                 nameof(MenuPage) => pages.FirstOrDefault(p => p.GetType() == typeof(MenuPage)),
                 nameof(EnvironmentPage) => pages.FirstOrDefault(p => p.GetType() == typeof(EnvironmentPage)),
-                nameof(WiFiTrackerPage) => pages.FirstOrDefault(p => p.GetType() == typeof(MenuPage)),
+                nameof(WiFiTrackerPage) => pages.FirstOrDefault(p => p.GetType() == typeof(WiFiTrackerPage)),
                 _ => null,
             };
 
-            // TODO: Figure out how to switch pages.
-            //       This will result in a non-existent breakpoint triggering at SamplingSensorBase.cs:67 (a closing brace?).
-            currentPage.StopUpdating();
-            currentPage = page;
-            currentPage.StartUpdating(hardware);
+            if (page is MenuPage)
+            {
+                SwitchToMenuNavigationHandlers();
+            }
+            else
+            {
+                SwitchToDisplayPageNavigationHandlers();
+            }
+
+            try
+            {
+                currentPage.StopUpdating();
+                currentPage = page;
+                currentPage.StartUpdating(hardware);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        void SwitchToMenuNavigationHandlers()
+        {
+            RemoveAllNavigationHandlers();
+            hardware.ButtonLeft.Clicked += MenuButtonLeft_Clicked;
+            hardware.ButtonRight.Clicked += MenuButtonRight_Clicked;
+            // Button down/up interrupt issues on v1 Project Lab Boards. Resolved in v2.
+            if (!isProjectLabBoardV1)
+            {
+                hardware.ButtonDown.Clicked += MenuButtonDown_Clicked;
+                hardware.ButtonUp.Clicked += MenuButtonUp_Clicked;
+            }
+            else
+            {
+                // HACK: Use long presses for Project Lab Board menu navigation.
+                hardware.ButtonRight.LongClickedThreshold = TimeSpan.FromMilliseconds(300);
+                Console.WriteLine($"{nameof(hardware.ButtonRight.LongClickedThreshold)}: {hardware.ButtonRight.LongClickedThreshold}");
+                hardware.ButtonLeft.LongClicked += MenuButtonUp_Clicked;
+                hardware.ButtonRight.LongClicked += MenuButtonDown_Clicked;
+            }
+        }
+        void SwitchToDisplayPageNavigationHandlers()
+        {
+            RemoveAllNavigationHandlers();
+            hardware.ButtonLeft.LongClicked += DisplayPageGoBack_Clicked;
+        }
+
+        void RemoveAllNavigationHandlers()
+        {
+            RemoveMenuNavigationHandlers();
+            RemoveDisplayPageNavigationHandlers();
+        }
+        void RemoveMenuNavigationHandlers()
+        {
+            hardware.ButtonLeft.Clicked -= MenuButtonLeft_Clicked;
+            hardware.ButtonRight.Clicked -= MenuButtonRight_Clicked;
+            // Button down/up interrupt issues on v1 Project Lab Boards. Resolved in v2.
+            if (!isProjectLabBoardV1)
+            {
+                hardware.ButtonDown.Clicked -= MenuButtonDown_Clicked;
+                hardware.ButtonUp.Clicked -= MenuButtonUp_Clicked;
+            }
+            else
+            {
+                // HACK: Use long presses for Project Lab Board menu navigation.
+                hardware.ButtonLeft.LongClicked -= MenuButtonUp_Clicked;
+                hardware.ButtonRight.LongClicked -= MenuButtonDown_Clicked;
+            }
+        }
+        void RemoveDisplayPageNavigationHandlers()
+        {
+            hardware.ButtonLeft.LongClicked -= DisplayPageGoBack_Clicked;
         }
 
         void DrawSplash(IPixelBuffer buffer)
@@ -240,24 +293,29 @@ namespace DefConBadge2022
             return new BufferRgb888(decoder.Width, decoder.Height, jpg);
         }
 
-        private void ButtonUp_Clicked(object sender, EventArgs e)
+        private void DisplayPageGoBack_Clicked(object sender, EventArgs e)
+        {
+            MenuPage_RequestPageChange(nameof(MenuPage));
+        }
+
+        private void MenuButtonUp_Clicked(object sender, EventArgs e)
         {
             currentPage.Up();
         }
 
-        private void ButtonDown_Clicked(object sender, EventArgs e)
+        private void MenuButtonDown_Clicked(object sender, EventArgs e)
         {
             currentPage.Down();
         }
 
-        private void ButtonRight_Clicked(object sender, EventArgs e)
+        private void MenuButtonRight_Clicked(object sender, EventArgs e)
         {
             tertiaryDisplayBrightness += brightnessChangeAmount;
             Console.WriteLine($"Brightness: {tertiaryDisplayBrightness}");
             currentPage.Right();
         }
 
-        private void ButtonLeft_Clicked(object sender, EventArgs e)
+        private void MenuButtonLeft_Clicked(object sender, EventArgs e)
         {
             tertiaryDisplayBrightness -= brightnessChangeAmount;
             Console.WriteLine($"Brightness: {tertiaryDisplayBrightness}");

@@ -1,4 +1,4 @@
-﻿using Meadow.Devices;
+using Meadow.Devices;
 using Meadow.Foundation.Audio;
 using Meadow.Foundation.Displays.TftSpi;
 using Meadow.Foundation.Graphics;
@@ -73,7 +73,7 @@ namespace DefConBadge2022
                 dcPin: device.Pins.A04,
                 resetPin: device.Pins.A05,
                 width: 240, height: 240,
-                displayColorMode: ColorType.Format16bppRgb565);
+                colorMode: ColorType.Format16bppRgb565);
 
             Graphics = new MicroGraphics(Display)
             {
