@@ -30,8 +30,8 @@ namespace DefConBadge2022
             menuItems = new MenuItem[]
             {
                 new MenuItem("Environment", command: nameof(EnvironmentPage)),
-                new MenuItem("WiFi Tracker", command: nameof(WiFiTrackerPage)),
-                new MenuItem("Display Test", command: nameof(GraphPage)),
+                new MenuItem("WiFi tracker", command: nameof(WiFiTrackerPage)),
+                new MenuItem("Chart test", command: nameof(GraphPage)),
                 new MenuItem("Options", subItems: new MenuItem[]
                 {
                     // TODO: TextDisplayMenuLibrary: does menu example need `$` prefix on strings: `$"Sound {value}", or is that a placeholder system?
@@ -81,7 +81,7 @@ namespace DefConBadge2022
         private void Menu_Selected(object sender, MenuSelectedEventArgs e)
         {
             menu.Disable();
-            Console.WriteLine($"Page selected: {e?.Command}");
+            Resolver.Log.Info($"Page selected: {e?.Command}");
             RequestPageChange(e?.Command);
         }
 

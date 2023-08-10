@@ -58,7 +58,7 @@ namespace DefConBadge2022
                 if (light is { } lightReading)
                 {
                     adjustedBrightness = (float)Math.Clamp(lightReading.Lux, lowestAmbientBrightnessThreshold, highestAmbientBrightnessThreshold).Map(lowestAmbientBrightnessThreshold, highestAmbientBrightnessThreshold, 0.1, 1.0);
-                    Console.WriteLine($"Lux: {lightReading.Lux}, Adjusted: {adjustedBrightness}");
+                    //Resolver.Log.Info($"Lux: {lightReading.Lux}, Adjusted: {adjustedBrightness}");
                 }
             }
             return adjustedBrightness;

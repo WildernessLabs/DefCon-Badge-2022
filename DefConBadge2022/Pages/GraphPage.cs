@@ -1,4 +1,5 @@
-﻿using Meadow.Foundation;
+﻿using Meadow;
+using Meadow.Foundation;
 using Meadow.Foundation.Graphics;
 using System;
 using System.Threading;
@@ -52,7 +53,7 @@ namespace DefConBadge2022
 
         public void Init(IHardwareConfig hardware)
         {
-            Console.WriteLine("Init");
+            Resolver.Log.Info("Init");
 
             data = new int[hardware.Graphics.Width];
 

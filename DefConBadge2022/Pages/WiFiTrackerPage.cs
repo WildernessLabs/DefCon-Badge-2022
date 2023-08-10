@@ -9,6 +9,8 @@ using Meadow.Gateway.WiFi;
 using System.Net.Http;
 using System.Collections.Generic;
 using System.Reflection.Emit;
+using Meadow;
+using Meadow.Devices.Esp32.MessagePayloads;
 
 namespace DefConBadge2022
 {
@@ -46,19 +48,19 @@ namespace DefConBadge2022
 
         void WiFiAdapter_NetworkConnected(object sender, EventArgs e)
         {
-            Console.WriteLine("Connection request completed.");
+            Resolver.Log.Info("Connection request completed.");
         }
 
         async Task ScanForAndDisplayAccessPoints(IWiFiNetworkAdapter wifi)
         {
-            Console.WriteLine("Getting list of access points.");
+            Resolver.Log.Info("Getting list of access points.");
             var networks = await wifi.Scan(TimeSpan.FromSeconds(60));
             Draw(networks);
         }
 
         public async Task GetWebPageViaHttpClient(string uri)
         {
-            Console.WriteLine($"Requesting {uri} - {DateTime.Now}");
+            Resolver.Log.Info($"Requesting {uri} - {DateTime.Now}");
 
             using (HttpClient client = new HttpClient())
             {
@@ -70,15 +72,15 @@ namespace DefConBadge2022
                 {
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(responseBody);
+                    Resolver.Log.Info(responseBody);
                 }
                 catch (TaskCanceledException)
                 {
-                    Console.WriteLine("Request time out.");
+                    Resolver.Log.Warn("Request time out.");
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Request went sideways: {e.Message}");
+                    Resolver.Log.Error($"Request went sideways: {e.Message}");
                 }
             }
         }
@@ -97,47 +99,24 @@ namespace DefConBadge2022
 
             if (networks.Count > 0)
             {
-                Console.WriteLine("|-------------------------------------------------------------|---------|");
-                Console.WriteLine("|         Network Name             | RSSI |       BSSID       | Channel |");
-                Console.WriteLine("|-------------------------------------------------------------|---------|");
+                Resolver.Log.Info("|-------------------------------------------------------------|---------|");
+                Resolver.Log.Info("|         Network Name             | RSSI |       BSSID       | Channel |");
+                Resolver.Log.Info("|-------------------------------------------------------------|---------|");
 
                 int yPosition = 0;
-                DrawMessage("| Name | RSSI | BSSID | Ch |", null, WildernessLabsColors.GalleryWhite, yPosition);
-                graphics.DrawText(x: 0, y: yPosition, "| Name | RSSI | BSSID | Ch |", color: WildernessLabsColors.AzureBlue);
+                DrawMessage("| Name | RSSI | BSSID | Ch |", null, WildernessLabsColors.AzureBlue, yPosition);
                 yPosition += 18;
                 foreach (WifiNetwork accessPoint in networks)
                 {
-                    Console.WriteLine($"| {accessPoint.Ssid,-32} | {accessPoint.SignalDbStrength,4} | {accessPoint.Bssid,17} |   {accessPoint.ChannelCenterFrequency,3}   |");
-                    //DrawMessage("Temperature:", $"{temp.Celsius:N1}C", WildernessLabsColors.GalleryWhite, 0);
+                    Resolver.Log.Info($"| {accessPoint.Ssid,-32} | {accessPoint.SignalDbStrength,4} | {accessPoint.Bssid,17} |   {accessPoint.ChannelCenterFrequency,3}   |");
+                    DrawMessage($"| {accessPoint.Ssid,-32} | {accessPoint.SignalDbStrength,4} | {accessPoint.Bssid,17} |   {accessPoint.ChannelCenterFrequency,3}   |", null, WildernessLabsColors.GalleryWhite, 0);
+                    yPosition += 18;
                 }
             }
             else
             {
-                Console.WriteLine($"No access points detected.");
-            }
-
-            if (config.TemperatureSensor.Temperature is { } temp)
-            {
-                DrawMessage("Temperature:", $"{temp.Celsius:N1}C", WildernessLabsColors.GalleryWhite, 0);
-            }
-
-            if (config.PressureSensor.Pressure is { } pressure)
-            {
-                DrawMessage("Pressure:", $"{pressure.StandardAtmosphere:N2}atm", WildernessLabsColors.GalleryWhite, 60);
-            }
-
-            if (config.HumiditySensor.Humidity is { } humidity)
-            {
-                DrawMessage("Humidity:", $"{humidity.Percent:N1}%", WildernessLabsColors.GalleryWhite, 120);
-            }
-
-
-            if (config.LightSensor.Illuminance is { } light)
-            {
-                if (light is { } lightReading)
-                {
-                    DrawMessage("Lux:", $"{lightReading:N0}Lux", WildernessLabsColors.GalleryWhite, 180);
-                }
+                Resolver.Log.Info($"No access points detected.");
+                DrawMessage($"No access points detected.", null, WildernessLabsColors.GalleryWhite, 0);
             }
 
             graphics.Show();

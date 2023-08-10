@@ -1,4 +1,5 @@
-﻿using Meadow.Devices;
+﻿using Meadow;
+using Meadow.Devices;
 using Meadow.Foundation.Audio;
 using Meadow.Foundation.Displays;
 using Meadow.Foundation.Graphics;
@@ -80,7 +81,7 @@ namespace DefConBadge2022
 
             Graphics = new MicroGraphics(Display)
             {
-                Rotation = RotationType._90Degrees,
+                Rotation = RotationType._270Degrees,
                 CurrentFont = new Font12x16()
             };
 
@@ -130,7 +131,7 @@ namespace DefConBadge2022
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Could not bring up Bh1750: {e.Message}");
+                Resolver.Log.Error($"Could not bring up Bh1750: {e.Message}");
             }
 
             try
@@ -144,7 +145,7 @@ namespace DefConBadge2022
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Could not bring up Bme688: {e.Message}");
+                Resolver.Log.Error($"Could not bring up Bme688: {e.Message}");
             }
 
             if (!isProjectLabBoardV1)
