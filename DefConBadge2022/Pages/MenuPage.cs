@@ -1,6 +1,6 @@
 ﻿using Meadow;
 using Meadow.Foundation;
-using Meadow.Foundation.Displays.TextDisplayMenu;
+using Meadow.Foundation.Displays.UI;
 using Meadow.Foundation.Graphics;
 using System;
 using System.Reflection;
@@ -16,7 +16,7 @@ namespace DefConBadge2022
         MicroGraphics graphics;
 
         public bool IsUpdating = false;
-        Menu menu;
+        TextDisplayMenu menu;
         MenuItem[] menuItems;
         Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
@@ -54,7 +54,7 @@ namespace DefConBadge2022
             //        }
             //    }
             //}
-            menu = new Menu(graphics, menuItems, showBackOnRoot: false);
+            menu = new TextDisplayMenu(graphics, menuItems, showBackOnRoot: false);
             menu.Selected += Menu_Selected;
             menu.Enable();
 
@@ -115,7 +115,7 @@ namespace DefConBadge2022
             graphics.DrawText(x: 0, y: yPosition, label, color: WildernessLabsColors.AzureBlue);
             graphics.DrawText(x: 10, y: yPosition + 18, value,
                 scaleFactor: ScaleFactor.X2,
-                alignment: TextAlignment.Left,
+                alignmentH: HorizontalAlignment.Left,
                 color: color);
         }
 

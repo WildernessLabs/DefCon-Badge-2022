@@ -1,6 +1,6 @@
-using Meadow.Devices;
+﻿using Meadow.Devices;
 using Meadow.Foundation.Audio;
-using Meadow.Foundation.Displays.TftSpi;
+using Meadow.Foundation.Displays;
 using Meadow.Foundation.Graphics;
 using Meadow.Foundation.ICs.IOExpanders;
 using Meadow.Foundation.Leds;
@@ -47,14 +47,18 @@ namespace DefConBadge2022
 
         public IToneGenerator Speaker { get; protected set; }
 
+        public INetworkAdapter WifiAdapter { get; protected set; }
+
         public ProjLabHardwareConfig(F7FeatherBase device, bool isProjectLabBoardV1 = false)
         {
-            RgbPwmLed = new RgbPwmLed(device: device,
+            RgbPwmLed = new RgbPwmLed(
                 redPwmPin: device.Pins.OnboardLedRed,
                 greenPwmPin: device.Pins.OnboardLedGreen,
                 bluePwmPin: device.Pins.OnboardLedBlue);
 
-            Speaker = new PiezoSpeaker(device, device.Pins.D11);
+            Speaker = new PiezoSpeaker(device.Pins.D11);
+
+            WifiAdapter = device.NetworkAdapters.Primary<IWiFiNetworkAdapter>();
 
             var config = new SpiClockConfiguration(
                 new Frequency(48000, Frequency.UnitType.Kilohertz),
@@ -67,13 +71,12 @@ namespace DefConBadge2022
                 config);
 
             Display = new St7789(
-                device: device,
                 spiBus: spiBus,
                 chipSelectPin: device.Pins.A03,
                 dcPin: device.Pins.A04,
                 resetPin: device.Pins.A05,
                 width: 240, height: 240,
-                colorMode: ColorType.Format16bppRgb565);
+                colorMode: ColorMode.Format16bppRgb565);
 
             Graphics = new MicroGraphics(Display)
             {
@@ -85,7 +88,7 @@ namespace DefConBadge2022
 
             try
             {
-                DisplaySecondary = new As1115(device, i2cBus, device.Pins.D04);
+                DisplaySecondary = new As1115(i2cBus, device.Pins.D04);
 
                 GraphicsSecondary = new MicroGraphics(DisplaySecondary)
                 {
@@ -100,7 +103,7 @@ namespace DefConBadge2022
 
             try
             {
-                DisplayTertiary = new C16x9(device, device.Pins.A02, i2cBus);
+                DisplayTertiary = new C16x9(device.Pins.A02, i2cBus);
 
                 GraphicsTertiary = new MicroGraphics(DisplayTertiary)
                 {
@@ -146,11 +149,11 @@ namespace DefConBadge2022
 
             if (!isProjectLabBoardV1)
             {
-                ButtonUp = new PushButton(device, device.Pins.D15, ResistorMode.InternalPullDown);
-                ButtonDown = new PushButton(device, device.Pins.D02, ResistorMode.InternalPullDown);
+                ButtonUp = new PushButton(device.Pins.D15, ResistorMode.InternalPullDown);
+                ButtonDown = new PushButton(device.Pins.D02, ResistorMode.InternalPullDown);
             }
-            ButtonRight = new PushButton(device, device.Pins.D05, ResistorMode.InternalPullDown);
-            ButtonLeft = new PushButton(device, device.Pins.D10, ResistorMode.InternalPullDown);
+            ButtonRight = new PushButton(device.Pins.D05, ResistorMode.InternalPullDown);
+            ButtonLeft = new PushButton(device.Pins.D10, ResistorMode.InternalPullDown);
         }
     }
 }

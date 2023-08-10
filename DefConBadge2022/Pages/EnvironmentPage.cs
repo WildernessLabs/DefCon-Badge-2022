@@ -73,7 +73,7 @@ namespace DefConBadge2022
             graphics.DrawText(x: 0, y: yPosition, label, color: WildernessLabsColors.AzureBlue);
             graphics.DrawText(x: 10, y: yPosition + 18, value,
                 scaleFactor: ScaleFactor.X2,
-                alignment: TextAlignment.Left, 
+                alignmentH: HorizontalAlignment.Left,
                 color: color);
         }
 

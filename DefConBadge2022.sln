@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graphics.MicroGraphics", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Displays.TftSpi", "..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Displays.TftSpi\Driver\Displays.TftSpi.csproj", "{3B03F899-D069-44CE-9BDA-E124D816503F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sensors.Atmospheric.Bme68x", "..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Atmospheric.Bme680\Driver\Sensors.Atmospheric.Bme68x.csproj", "{B1982E39-1F57-46A1-9FF7-5223E30AE1A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sensors.Atmospheric.Bme68x", "..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Atmospheric.Bme68x\Driver\Sensors.Atmospheric.Bme68x.csproj", "{B1982E39-1F57-46A1-9FF7-5223E30AE1A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Foundation.Core", "..\Meadow.Foundation\Source\Meadow.Foundation.Core\Meadow.Foundation.Core.csproj", "{D4D1CC3D-27B1-4323-A0A7-706203A3A504}"
 EndProject
@@ -19,9 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sensors.Light.Bh1750", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Core", "..\Meadow.Core\source\Meadow.Core\Meadow.Core.csproj", "{64B7F9FD-2435-4110-BBEE-08F296BE66B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.F7", "..\Meadow.Core\source\Meadow.F7\Meadow.F7.csproj", "{DE6AC99D-7146-43B3-9BA7-6C8D6F0A5B2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.F7", "..\Meadow.Core\source\implementations\f7\Meadow.F7\Meadow.F7.csproj", "{DE6AC99D-7146-43B3-9BA7-6C8D6F0A5B2B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Logging", "..\Meadow.Logging\lib\Meadow.Logging.csproj", "{56659162-C7DE-4B5C-8F1F-CC33E646BDC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Logging", "..\Meadow.Logging\Source\Meadow.Logging\lib\Meadow.Logging.csproj", "{56659162-C7DE-4B5C-8F1F-CC33E646BDC5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Units", "..\Meadow.Units\Source\Meadow.Units\Meadow.Units.csproj", "{F36CA968-4A12-4CE1-80B0-C0A07869A6E1}"
 EndProject

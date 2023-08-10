@@ -1,5 +1,6 @@
 ﻿using Meadow.Foundation.Graphics;
 using Meadow.Foundation.Leds;
+using Meadow.Hardware;
 using Meadow.Peripherals.Sensors;
 using Meadow.Peripherals.Sensors.Buttons;
 using Meadow.Peripherals.Sensors.Light;
@@ -18,9 +19,7 @@ namespace DefConBadge2022
         public IGraphicsDisplay Display { get; }
         public IGraphicsDisplay DisplaySecondary { get; }
 
-
         public IToneGenerator Speaker { get; }
-
 
         public ITemperatureSensor TemperatureSensor { get; }
         public IBarometricPressureSensor PressureSensor { get; }
@@ -28,6 +27,7 @@ namespace DefConBadge2022
 
         public ILightSensor LightSensor { get; }
 
+        public INetworkAdapter WifiAdapter { get; }
 
         public IButton ButtonLeft { get; }
         public IButton ButtonRight { get; }

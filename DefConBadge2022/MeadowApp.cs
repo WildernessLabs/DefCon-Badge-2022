@@ -154,7 +154,7 @@ namespace DefConBadge2022
 
             if (useMikroBusButtonLed)
             {
-                buttonLed = new PwmLed(Device, Device.Pins.D03, new Voltage(3.3));
+                buttonLed = new PwmLed(Device.Pins.D03, new Voltage(3.3));
 
                 buttonLed.StartPulse(TimeSpan.FromMilliseconds(2000), 1, 0);
             }
